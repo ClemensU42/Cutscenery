@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "cutscenery",
+  "version": "${version}",
+  "name": "Cutscenery",
+  "description": "This mod adds the ability to create real time cutscenes",
+  "authors": [
+    "ClemensU42"
+  ],
+  "contact": {
+    "repo": "To be inserted"
+  },
+  "license": "MIT",
+  "icon": "assets/cutscenery/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.clemensu42.cutscenery.cutscenery.client.CutsceneryClient"
+    ],
+    "main": [
+      "com.clemensu42.cutscenery.cutscenery.Cutscenery"
+    ]
+  },
+  "mixins": [
+    "cutscenery.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.19",
+    "fabric-key-binding-api-v1": "*"
+  },
+  "accessWidener": "cutscenery.accesswidener"
+}
