@@ -1,8 +1,10 @@
 {
-  "origin": "relative",
-  "runtime": 4,
+  "file_version": 1,
+  "origin": "cutscenery:origin_type/relative",
+  "playtime": 4,
   "keyframes": [
     {
+      "environment": "client",
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
@@ -11,11 +13,13 @@
       },
       "rotation": {
         "pitch": -45,
-        "yaw": 0
+        "yaw": 0,
+        "roll": 0
       },
       "time": 0
     },
     {
+      "environment": "client",
       "type": "cutscenery:camera",
       "position": {
         "x": 0,
@@ -24,11 +28,13 @@
       },
       "rotation": {
         "pitch": -45,
-        "yaw": 90
+        "yaw": 90,
+        "roll": 0
       },
       "time": 2
     },
     {
+      "environment": "client",
       "type": "cutscenery:camera",
       "position": {
         "x": 0,
@@ -37,11 +43,13 @@
       },
       "rotation": {
         "pitch": -45,
-        "yaw": 180
+        "yaw": 180,
+        "roll": 0
       },
       "time": 3
     },
     {
+      "environment": "client",
       "type": "cutscenery:camera",
       "position": {
         "x": -5,
@@ -50,7 +58,8 @@
       },
       "rotation": {
         "pitch": -45,
-        "yaw": 270
+        "yaw": 270,
+        "roll": 0
       },
       "time": 4
     }

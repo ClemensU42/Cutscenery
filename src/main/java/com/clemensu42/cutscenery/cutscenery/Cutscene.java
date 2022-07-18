@@ -1,6 +1,9 @@
 package com.clemensu42.cutscenery.cutscenery;
 
 import com.clemensu42.cutscenery.cutscenery.Keyframes.Keyframe;
+import com.clemensu42.cutscenery.cutscenery.resourcemanagement.Resources;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -11,10 +14,68 @@ import java.util.*;
 public class Cutscene {
     public HashMap<Identifier, List<Keyframe>> serverKeyframes = new HashMap<>();
     public HashMap<Identifier, List<Keyframe>> clientKeyframes = new HashMap<>();
+
     public float playtime;
     public Vec3d originPosition;
-    public Identifier originType;
+    public String originType;
 
+    public boolean loadFromJson(Identifier id){
+        JsonObject jsonObject = Resources.CUTSCENE_JSON_OBJECTS.get(id);
+
+        if(jsonObject.get("file_version").getAsInt() != CutsceneryConstants.CUTSCENE_FILE_VERSION){
+            Cutscenery.LOGGER.error("file version of file " + id.getPath() + " is not up to date!");
+            return false;
+        }
+
+        originType = jsonObject.get("origin").getAsString();
+        playtime = jsonObject.get("playtime").getAsFloat();
+        JsonArray jsonKeyframes = jsonObject.get("keyframes").getAsJsonArray();
+
+        for(int i = 0; i < jsonKeyframes.size(); i++){
+            JsonObject currentKeyframeJson = jsonKeyframes.get(i).getAsJsonObject();
+            Keyframe keyframe = new Keyframe();
+            Identifier type = new Identifier(currentKeyframeJson.get("type").getAsString());
+            if(currentKeyframeJson.has("position")) {
+                JsonObject positionJson = currentKeyframeJson.get("position").getAsJsonObject();
+                keyframe.position = new Vec3d(
+                        positionJson.get("x").getAsFloat(),
+                        positionJson.get("y").getAsFloat(),
+                        positionJson.get("z").getAsFloat()
+                );
+            }
+            keyframe.time = currentKeyframeJson.get("time").getAsFloat();
+            String environment = currentKeyframeJson.get("environment").getAsString();
+            if(environment.equals("client")){
+                if(!clientKeyframes.containsKey(type)){
+                    clientKeyframes.put(type, new ArrayList<>());
+                }
+
+                clientKeyframes.get(type).add(keyframe);
+
+            } else if (environment.equals("server")){
+                if(!serverKeyframes.containsKey(type)){
+                    serverKeyframes.put(type, new ArrayList<>());
+                }
+
+                serverKeyframes.get(type).add(keyframe);
+
+            } else {
+                Cutscenery.LOGGER.error("Environment " + environment + " is not a valid environment in " + id.getPath());
+            }
+        }
+
+        Comparator<Keyframe> comparator = (k1, k2) -> Float.compare(k2.time, k1.time);
+
+        for(List<Keyframe> list : clientKeyframes.values()) {
+            list.sort(comparator);
+        }
+
+        for(List<Keyframe> list : serverKeyframes.values()){
+            list.sort(comparator);
+        }
+
+        return true;
+    }
 
     public PacketByteBuf createClientByteBuf(){
         PacketByteBuf buffer = PacketByteBufs.create();
@@ -24,7 +85,7 @@ public class Cutscene {
         buffer.writeDouble(originPosition.getY());
         buffer.writeDouble(originPosition.getZ());
 
-        buffer.writeIdentifier(originType);
+        buffer.writeString(originType);
 
         Iterator<Identifier> identifiers = clientKeyframes.keySet().iterator();
         List<List<Keyframe>> keyframes = clientKeyframes.values().stream().toList();
@@ -55,7 +116,7 @@ public class Cutscene {
 
         originPosition = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 
-        originType = buffer.readIdentifier();
+        originType = buffer.readString();
 
         clientKeyframes = new HashMap<>();
         int entryAmount = buffer.readInt();
