@@ -25,7 +25,11 @@ public class KeyframeCollection {
     }
 
     public void update(float totalPassedTime, CommonKeyframeInterface target, Cutscene cutscene){
-        if(getNextKeyframe().time >= totalPassedTime) currentKeyframe++;
-        if(getCurrentKeyframe().time >= totalPassedTime) getCurrentKeyframe().update(totalPassedTime, target, cutscene, getNextKeyframe());
+        if(getNextKeyframe().time <= totalPassedTime) {
+            currentKeyframe++;
+            Cutscenery.LOGGER.info("Current Keyframe: " + currentKeyframe);
+        }
+        //if(getCurrentKeyframe().time >= totalPassedTime)
+        getCurrentKeyframe().update(totalPassedTime, target, cutscene, getNextKeyframe());
     }
 }

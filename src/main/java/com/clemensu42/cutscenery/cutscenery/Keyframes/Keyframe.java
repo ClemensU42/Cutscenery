@@ -35,6 +35,9 @@ public class Keyframe {
     }
 
     public void update(float totalPassedTime, CommonKeyframeInterface target, Cutscene cutscene, Keyframe nextKeyframe){
-        target.setObjectPosition(cutscene.translatePosition(getPosition(nextKeyframe, totalPassedTime)));
+        Vec3d lerpedPos = getPosition(nextKeyframe, totalPassedTime);
+        Vec3d newpos = cutscene.translatePosition(lerpedPos);
+        target.setObjectPosition(newpos);
+        Cutscenery.LOGGER.info("Camera position: " + target.getObjectPosition());
     }
 }

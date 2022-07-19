@@ -5,7 +5,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class Utilities {
     public static Vec3d lerp(Vec3d from, Vec3d to, float i){
-        return from.add((to.subtract(from)).multiply(i));
+        Vec3d result = from.add((to.subtract(from)).multiply(i));
+        return result;
     }
 
     public static float lerp(float from, float to, float i){

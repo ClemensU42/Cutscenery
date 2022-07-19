@@ -10,8 +10,8 @@ public class CutsceneryConstants {
 
     public static final Identifier KEYFRAME_CAMERA_TYPE = new Identifier(MODID, "camera");
 
-    public static final Identifier CUTSCENE_ORIGIN_TYPE_RELATIVE = new Identifier(MODID, "origin_type/relative");
-    public static final Identifier CUTSCENE_ORIGIN_TYPE_ABSOLUTE = new Identifier(MODID, "origin_type/absolute");
+    public static final int CUTSCENE_ORIGIN_TYPE_RELATIVE = 1;
+    public static final int CUTSCENE_ORIGIN_TYPE_ABSOLUTE = 2;
 
     public static final int CUTSCENE_FILE_VERSION = 1;
 }

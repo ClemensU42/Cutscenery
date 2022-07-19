@@ -38,10 +38,11 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 
     private boolean bobViewCopy;
 
-    @Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("TAIL"))
+    @Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("HEAD"), cancellable = true)
     private void updateInject(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci){
         if(ClientCutsceneManager.camera == null) ClientCutsceneManager.camera = ((Camera)(Object)this);
         ClientCutsceneManager.tick(tickDelta);
+        if(CameraMixin.frozen) ci.cancel();
     }
 
     @Override

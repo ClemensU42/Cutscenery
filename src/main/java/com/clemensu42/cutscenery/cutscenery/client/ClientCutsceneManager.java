@@ -2,6 +2,7 @@ package com.clemensu42.cutscenery.cutscenery.client;
 
 import com.clemensu42.cutscenery.cutscenery.CommonKeyframeInterface;
 import com.clemensu42.cutscenery.cutscenery.Cutscene;
+import com.clemensu42.cutscenery.cutscenery.Cutscenery;
 import com.clemensu42.cutscenery.cutscenery.CutsceneryConstants;
 import com.clemensu42.cutscenery.cutscenery.mixin.client.MinecraftClientMixin;
 import net.fabricmc.api.EnvType;
@@ -41,6 +42,8 @@ public class ClientCutsceneManager {
             cutscene.loadFromByteBuf(buf);
             cutsceneTargets.put(CutsceneryConstants.KEYFRAME_CAMERA_TYPE, (CommonKeyframeInterface)MinecraftClient.getInstance().gameRenderer.getCamera());
             ClientPlayNetworking.send(CutsceneryConstants.SEND_CLIENT_CUTSCENE_PACKET_RECEIVED_ID, PacketByteBufs.empty());
+            // TODO: add proper origin support
+            cutscene.originPosition = MinecraftClient.getInstance().player.getEyePos();
             buf.release();
         }));
 
@@ -58,7 +61,6 @@ public class ClientCutsceneManager {
             timer = 0;
             return;
         }
-
         cutscene.tick(timer);
 
         timer += 1f / (float)((MinecraftClientMixin)MinecraftClient.getInstance()).getCurrentFPS();

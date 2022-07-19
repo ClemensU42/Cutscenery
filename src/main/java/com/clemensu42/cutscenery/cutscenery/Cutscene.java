@@ -21,7 +21,7 @@ public class Cutscene {
 
     public float playtime;
     public Vec3d originPosition = Vec3d.ZERO;
-    public String originType;
+    public int originType;
 
     private EnvType environment;
 
@@ -35,7 +35,7 @@ public class Cutscene {
             return false;
         }
 
-        originType = jsonObject.get("origin").getAsString();
+        originType = jsonObject.get("origin").getAsInt();
         playtime = jsonObject.get("playtime").getAsFloat();
         JsonArray jsonKeyframes = jsonObject.get("keyframes").getAsJsonArray();
 
@@ -72,7 +72,7 @@ public class Cutscene {
             }
         }
 
-        Comparator<Keyframe> comparator = (k1, k2) -> Float.compare(k2.time, k1.time);
+        Comparator<Keyframe> comparator = (k1, k2) -> Float.compare(k1.time, k2.time);
 
         for(KeyframeCollection keyframeCollection : clientKeyframes.values()) {
             keyframeCollection.keyframes.sort(comparator);
@@ -93,7 +93,7 @@ public class Cutscene {
         buffer.writeDouble(originPosition.getY());
         buffer.writeDouble(originPosition.getZ());
 
-        buffer.writeString(originType);
+        buffer.writeInt(originType);
 
         Iterator<Identifier> identifiers = clientKeyframes.keySet().iterator();
         List<KeyframeCollection> keyframes = clientKeyframes.values().stream().toList();
@@ -127,7 +127,7 @@ public class Cutscene {
 
         originPosition = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 
-        originType = buffer.readString();
+        originType = buffer.readInt();
 
         clientKeyframes = new HashMap<>();
         int entryAmount = buffer.readInt();
@@ -167,9 +167,9 @@ public class Cutscene {
     }
 
     public Vec3d translatePosition(Vec3d originalPosition){
-        if(originType.equals(CutsceneryConstants.CUTSCENE_ORIGIN_TYPE_ABSOLUTE.getPath()))
+        if(originType == CutsceneryConstants.CUTSCENE_ORIGIN_TYPE_ABSOLUTE)
             return originalPosition;
-        else if(originType.equals(CutsceneryConstants.CUTSCENE_ORIGIN_TYPE_RELATIVE.getPath()))
+        else if(originType == CutsceneryConstants.CUTSCENE_ORIGIN_TYPE_RELATIVE)
             return originalPosition.add(originPosition);
         return Vec3d.ZERO;
     }
