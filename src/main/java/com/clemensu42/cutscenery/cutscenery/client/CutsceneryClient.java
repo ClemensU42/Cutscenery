@@ -12,5 +12,6 @@ public class CutsceneryClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         Keybinds.initializeKeybinds();
+        ClientCutsceneManager.init();
     }
 }

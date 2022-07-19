@@ -1,8 +1,8 @@
 package com.clemensu42.cutscenery.cutscenery.mixin.client;
 
+import com.clemensu42.cutscenery.cutscenery.CommonKeyframeInterface;
 import com.clemensu42.cutscenery.cutscenery.client.CameraInterface;
-import com.clemensu42.cutscenery.cutscenery.client.Keybinds;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
+import com.clemensu42.cutscenery.cutscenery.client.ClientCutsceneManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.Camera;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin implements CameraInterface {
+public abstract class CameraMixin implements CameraInterface, CommonKeyframeInterface {
 
     @Shadow
     protected abstract void setPos(Vec3d pos);
@@ -34,34 +34,29 @@ public abstract class CameraMixin implements CameraInterface {
     @Shadow @Final private Quaternion rotation;
     @Shadow private float pitch;
     @Shadow private float yaw;
-    private static Vec3d freezePosition;
-    private static float freezePitch, freezeYaw;
     private static boolean frozen = false;
 
     private boolean bobViewCopy;
 
     @Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("TAIL"))
     private void updateInject(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci){
-        if(frozen){
-            if(Keybinds.freezeKeyBind.wasPressed()) {
-                frozen = false;
-                MinecraftClient.getInstance().options.getBobView().setValue(bobViewCopy);
-                MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
-                MinecraftClient.getInstance().options.hudHidden = false;
-            }
-            setPos(freezePosition);
-            setRotation(freezeYaw, freezePitch);
+        if(ClientCutsceneManager.camera == null) ClientCutsceneManager.camera = ((Camera)(Object)this);
+        ClientCutsceneManager.tick(tickDelta);
+    }
+
+    @Override
+    public void setFrozen(boolean frozen) {
+        if(!frozen){
+            MinecraftClient.getInstance().options.getBobView().setValue(bobViewCopy);
+            MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
+            MinecraftClient.getInstance().options.hudHidden = false;
+            CameraMixin.frozen = false;
         } else {
-            if(Keybinds.freezeKeyBind.wasPressed()) {
-                frozen = true;
-                MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
-                bobViewCopy = MinecraftClient.getInstance().options.getBobView().getValue();
-                MinecraftClient.getInstance().options.getBobView().setValue(false);
-                MinecraftClient.getInstance().options.hudHidden = true;
-            }
-            freezePosition = getPos();
-            freezeYaw = getYaw();
-            freezePitch = getPitch();
+            MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
+            bobViewCopy = MinecraftClient.getInstance().options.getBobView().getValue();
+            MinecraftClient.getInstance().options.getBobView().setValue(false);
+            MinecraftClient.getInstance().options.hudHidden = true;
+            CameraMixin.frozen = true;
         }
     }
 
@@ -83,5 +78,32 @@ public abstract class CameraMixin implements CameraInterface {
     @Override
     public void setPosition(Vec3d position){
         setPos(position);
+    }
+
+    // Keyframe stuff
+
+    @Override
+    public void setObjectPosition(Vec3d position) {
+        setPos(position);
+    }
+
+    @Override
+    public Vec3d getObjectPosition() {
+        return getPos();
+    }
+
+    @Override
+    public void setPitch(float pitch) {
+        setRotation(getYaw(), pitch);
+    }
+
+    @Override
+    public void setYaw(float yaw) {
+        setRotation(yaw, getPitch());
+    }
+
+    @Override
+    public float getRoll() {
+        return 0;
     }
 }

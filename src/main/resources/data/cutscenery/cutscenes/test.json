@@ -1,7 +1,7 @@
 {
   "file_version": 1,
   "origin": "cutscenery:origin_type/relative",
-  "playtime": 4,
+  "playtime": 3,
   "keyframes": [
     {
       "environment": "client",
@@ -31,7 +31,7 @@
         "yaw": 90,
         "roll": 0
       },
-      "time": 2
+      "time": 1
     },
     {
       "environment": "client",
@@ -46,7 +46,7 @@
         "yaw": 180,
         "roll": 0
       },
-      "time": 3
+      "time": 2
     },
     {
       "environment": "client",
@@ -61,7 +61,7 @@
         "yaw": 270,
         "roll": 0
       },
-      "time": 4
+      "time": 3
     }
   ]
 }

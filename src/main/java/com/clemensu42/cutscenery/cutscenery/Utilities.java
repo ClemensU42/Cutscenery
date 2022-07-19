@@ -1,12 +1,11 @@
 package com.clemensu42.cutscenery.cutscenery;
 
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.Vec3i;
 
 public class Utilities {
     public static Vec3d lerp(Vec3d from, Vec3d to, float i){
-        return to.multiply(i).add(from.multiply(1f - i));
+        return from.add((to.subtract(from)).multiply(i));
     }
 
     public static float lerp(float from, float to, float i){

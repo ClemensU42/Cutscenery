@@ -1,7 +1,11 @@
 package com.clemensu42.cutscenery.cutscenery.Keyframes;
 
+import com.clemensu42.cutscenery.cutscenery.CommonKeyframeInterface;
+import com.clemensu42.cutscenery.cutscenery.Cutscene;
+import com.clemensu42.cutscenery.cutscenery.Cutscenery;
 import com.clemensu42.cutscenery.cutscenery.Utilities;
 import net.fabricmc.api.EnvType;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 public class Keyframe {
@@ -30,7 +34,7 @@ public class Keyframe {
         return Utilities.lerp(roll, nextKeyFrame.roll, mappedTime);
     }
 
-    public EnvType getEnviroment(){
-        return EnvType.SERVER;
+    public void update(float totalPassedTime, CommonKeyframeInterface target, Cutscene cutscene, Keyframe nextKeyframe){
+        target.setObjectPosition(cutscene.translatePosition(getPosition(nextKeyframe, totalPassedTime)));
     }
 }
