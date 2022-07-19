@@ -1,5 +1,6 @@
 package com.clemensu42.cutscenery.cutscenery;
 
+import com.clemensu42.cutscenery.cutscenery.Keyframes.CommonKeyframeInterface;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;

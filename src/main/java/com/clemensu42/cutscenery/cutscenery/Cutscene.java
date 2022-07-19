@@ -6,7 +6,6 @@ import com.clemensu42.cutscenery.cutscenery.resourcemanagement.Resources;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -25,14 +24,14 @@ public class Cutscene {
 
     private EnvType environment;
 
-    public boolean loadFromJson(Identifier id){
+    public void loadFromJson(Identifier id){
         // Cutscene Json files are ONLY read from the logical server
         environment = EnvType.SERVER;
         JsonObject jsonObject = Resources.CUTSCENE_JSON_OBJECTS.get(id);
 
         if(jsonObject.get("file_version").getAsInt() != CutsceneryConstants.CUTSCENE_FILE_VERSION){
             Cutscenery.LOGGER.error("file version of file " + id.getPath() + " is not up to date!");
-            return false;
+            return;
         }
 
         originType = jsonObject.get("origin").getAsInt();
@@ -50,6 +49,13 @@ public class Cutscene {
                         positionJson.get("y").getAsFloat(),
                         positionJson.get("z").getAsFloat()
                 );
+            }
+
+            if(currentKeyframeJson.has("rotation")){
+                JsonObject rotationJson = currentKeyframeJson.get("rotation").getAsJsonObject();
+                keyframe.pitch = rotationJson.get("pitch").getAsFloat();
+                keyframe.yaw = rotationJson.get("yaw").getAsFloat();
+                keyframe.roll = rotationJson.get("roll").getAsFloat();
             }
             keyframe.time = currentKeyframeJson.get("time").getAsFloat();
             String environment = currentKeyframeJson.get("environment").getAsString();
@@ -82,7 +88,6 @@ public class Cutscene {
             keyframeCollection.keyframes.sort(comparator);
         }
 
-        return true;
     }
 
     public PacketByteBuf createClientByteBuf(){

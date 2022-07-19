@@ -1,8 +1,7 @@
 package com.clemensu42.cutscenery.cutscenery.client;
 
-import com.clemensu42.cutscenery.cutscenery.CommonKeyframeInterface;
+import com.clemensu42.cutscenery.cutscenery.Keyframes.CommonKeyframeInterface;
 import com.clemensu42.cutscenery.cutscenery.Cutscene;
-import com.clemensu42.cutscenery.cutscenery.Cutscenery;
 import com.clemensu42.cutscenery.cutscenery.CutsceneryConstants;
 import com.clemensu42.cutscenery.cutscenery.mixin.client.MinecraftClientMixin;
 import net.fabricmc.api.EnvType;

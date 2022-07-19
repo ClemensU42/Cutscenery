@@ -1,6 +1,7 @@
 package com.clemensu42.cutscenery.cutscenery.mixin.client;
 
-import com.clemensu42.cutscenery.cutscenery.CommonKeyframeInterface;
+import com.clemensu42.cutscenery.cutscenery.Cutscenery;
+import com.clemensu42.cutscenery.cutscenery.Keyframes.CommonKeyframeInterface;
 import com.clemensu42.cutscenery.cutscenery.client.CameraInterface;
 import com.clemensu42.cutscenery.cutscenery.client.ClientCutsceneManager;
 import net.minecraft.client.MinecraftClient;
@@ -94,17 +95,9 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
     }
 
     @Override
-    public void setPitch(float pitch) {
-        setRotation(getYaw(), pitch);
+    public void setObjectRotation(float pitch, float yaw, float roll) {
+        setRotation(yaw, pitch);
+        Cutscenery.LOGGER.info("pitch: " + pitch + " yaw: " + yaw + " roll: " + roll);
     }
 
-    @Override
-    public void setYaw(float yaw) {
-        setRotation(yaw, getPitch());
-    }
-
-    @Override
-    public float getRoll() {
-        return 0;
-    }
 }

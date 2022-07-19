@@ -1,7 +1,7 @@
 package com.clemensu42.cutscenery.cutscenery;
 
+import com.clemensu42.cutscenery.cutscenery.Keyframes.CommonKeyframeInterface;
 import com.clemensu42.cutscenery.cutscenery.Keyframes.Keyframe;
-import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
