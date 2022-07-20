@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class CameraMixin implements CameraInterface, CommonKeyframeInterface
 {
 
-	private static boolean frozen = false;
 	@Shadow
 	@Final
 	private Vec3f diagonalPlane;
@@ -53,12 +52,11 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 	@Shadow
 	protected abstract void setPos(Vec3d pos);
 
-	@Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("TAIL"))
 	private void updateInject(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci)
 	{
 		if (ClientCutsceneManager.camera == null) ClientCutsceneManager.camera = ((Camera) (Object) this);
 		ClientCutsceneManager.tick(tickDelta);
-		if (CameraMixin.frozen) ci.cancel();
 	}
 
 	@Override
@@ -69,7 +67,6 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 			MinecraftClient.getInstance().options.getBobView().setValue(bobViewCopy);
 			MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
 			MinecraftClient.getInstance().options.hudHidden = false;
-			CameraMixin.frozen = false;
 		}
 		else
 		{
@@ -77,7 +74,6 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 			bobViewCopy = MinecraftClient.getInstance().options.getBobView().getValue();
 			MinecraftClient.getInstance().options.getBobView().setValue(false);
 			MinecraftClient.getInstance().options.hudHidden = true;
-			CameraMixin.frozen = true;
 		}
 	}
 
