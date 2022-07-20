@@ -7,6 +7,21 @@
       "environment": "client",
       "type": "cutscenery:camera",
       "position": {
+        "x": 10,
+        "y": 5,
+        "z": 5
+      },
+      "rotation": {
+        "pitch": 20,
+        "yaw": 360,
+        "roll": 0
+      },
+      "time": 0
+    },
+    {
+      "environment": "client",
+      "type": "cutscenery:camera",
+      "position": {
         "x": 5,
         "y": 5,
         "z": 5
@@ -23,7 +38,7 @@
       "type": "cutscenery:camera",
       "position": {
         "x": -5,
-        "y": 0,
+        "y": 5,
         "z": 5
       },
       "rotation": {
@@ -38,7 +53,7 @@
       "type": "cutscenery:camera",
       "position": {
         "x": -5,
-        "y": 0,
+        "y": 5,
         "z": -5
       },
       "rotation": {
@@ -53,7 +68,7 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
-        "y": 0,
+        "y": 5,
         "z": -5
       },
       "rotation": {
@@ -70,6 +85,21 @@
         "x": 5,
         "y": 5,
         "z": 5
+      },
+      "rotation": {
+        "pitch": 20,
+        "yaw": 0,
+        "roll": 0
+      },
+      "time": 8
+    },
+    {
+      "environment": "client",
+      "type": "cutscenery:camera",
+      "position": {
+        "x": 5,
+        "y": 5,
+        "z": 10
       },
       "rotation": {
         "pitch": 20,
