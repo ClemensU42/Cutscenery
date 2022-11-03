@@ -44,9 +44,9 @@ public class Keyframe
 	{
 		target.setObjectPosition(cutscene.translatePosition(getPosition(keyframeCollection, totalPassedTime)));
 		Cutscenery.LOGGER.info(target.getObjectPosition().toString());
-		/*target.setObjectRotation(
+		target.setObjectRotation(
 				getPitch(keyframeCollection.getNextKeyframe(), totalPassedTime),
 				getYaw(keyframeCollection.getNextKeyframe(), totalPassedTime),
-				getRoll(keyframeCollection.getNextKeyframe(), totalPassedTime)); */
+				getRoll(keyframeCollection.getNextKeyframe(), totalPassedTime));
 	}
 }
