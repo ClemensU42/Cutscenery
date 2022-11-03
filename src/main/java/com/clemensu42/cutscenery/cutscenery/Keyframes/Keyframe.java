@@ -1,6 +1,9 @@
 package com.clemensu42.cutscenery.cutscenery.Keyframes;
 
-import com.clemensu42.cutscenery.cutscenery.*;
+import com.clemensu42.cutscenery.cutscenery.CatmullRomCurve;
+import com.clemensu42.cutscenery.cutscenery.Cutscene;
+import com.clemensu42.cutscenery.cutscenery.KeyframeCollection;
+import com.clemensu42.cutscenery.cutscenery.Utilities;
 import net.minecraft.util.math.Vec3d;
 
 public class Keyframe
@@ -14,12 +17,7 @@ public class Keyframe
 	{
 		float mappedTime = Utilities.map(time, keyframeCollection.getNextKeyframe().time, 0f, 1f, currentTime);
 		//return Utilities.lerp(position, nextKeyFrame.position, mappedTime);
-		return CatmullRomCurve.GetPoint(mappedTime, 0.5f,
-				keyframeCollection.getLastKeyframe().position,
-				keyframeCollection.getCurrentKeyframe().position,
-				keyframeCollection.getNextKeyframe().position,
-				keyframeCollection.getSecondNextKeyframe().position
-		);
+		return CatmullRomCurve.getPointOnSegment(keyframeCollection.currentPositionSegment, mappedTime);
 	}
 
 	public float getPitch(Keyframe nextKeyFrame, float currentTime)
@@ -43,7 +41,6 @@ public class Keyframe
 	public void update(float totalPassedTime, CommonKeyframeInterface target, Cutscene cutscene, KeyframeCollection keyframeCollection)
 	{
 		target.setObjectPosition(cutscene.translatePosition(getPosition(keyframeCollection, totalPassedTime)));
-		Cutscenery.LOGGER.info(target.getObjectPosition().toString());
 		target.setObjectRotation(
 				getPitch(keyframeCollection.getNextKeyframe(), totalPassedTime),
 				getYaw(keyframeCollection.getNextKeyframe(), totalPassedTime),

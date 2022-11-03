@@ -4,30 +4,40 @@ import net.minecraft.util.math.Vec3d;
 
 public class CatmullRomCurve
 {
-	public static Vec3d GetPoint(float t, float alpha, Vec3d p0, Vec3d p1, Vec3d p2, Vec3d p3)
+	public static Segment calculateSegment(Vec3d p0, Vec3d p1, Vec3d p2, Vec3d p3, float alpha, float tension)
 	{
-		float k0 = 0;
-		float k1 = getKnotInterval(p0, p1, alpha);
-		float k2 = getKnotInterval(p1, p2, alpha) + k1;
-		float k3 = getKnotInterval(p2, p3, alpha) + k2;
+		float t01 = (float) Math.pow(p0.distanceTo(p1), alpha);
+		float t12 = (float) Math.pow(p1.distanceTo(p2), alpha);
+		float t23 = (float) Math.pow(p2.distanceTo(p3), alpha);
 
-		float u = Utilities.lerp(k1, k2, t);
-		Vec3d A1 = remap(k0, k1, p0, p1, u);
-		Vec3d A2 = remap(k1, k2, p1, p2, u);
-		Vec3d A3 = remap(k2, k3, p2, p3, u);
-		Vec3d B1 = remap(k0, k1, A1, A2, u);
-		Vec3d B2 = remap(k1, k2, A2, A3, u);
-		return remap(k1, k2, B1, B2, u);
+		Vec3d m1 = new Vec3d(
+				(1.0f - tension) * (p2.x - p1.x + t12 * ((p1.x - p0.x) / t01 - (p2.x - p0.x) / (t01 + t12))),
+				(1.0f - tension) * (p2.y - p1.y + t12 * ((p1.y - p0.y) / t01 - (p2.y - p0.y) / (t01 + t12))),
+				(1.0f - tension) * (p2.z - p1.z + t12 * ((p1.z - p0.z) / t01 - (p2.z - p0.z) / (t01 + t12)))
+		);
+
+		Vec3d m2 = new Vec3d(
+				(1.0f - tension) * (p2.x - p1.x + t12 * ((p3.x - p2.x) / t23 - (p3.x - p1.x) / (t12 + t23))),
+				(1.0f - tension) * (p2.y - p1.y + t12 * ((p3.y - p2.y) / t23 - (p3.y - p1.y) / (t12 + t23))),
+				(1.0f - tension) * (p2.z - p1.z + t12 * ((p3.z - p2.z) / t23 - (p3.z - p1.z) / (t12 + t23)))
+		);
+
+		Segment segment = new Segment();
+		segment.a = (p1.subtract(p2)).multiply(2.0f).add(m1).add(m2);
+		segment.b = (p1.subtract(p2)).multiply(-3.0f).subtract(m1).subtract(m1).subtract(m2);
+		segment.c = m1;
+		segment.d = p1;
+
+		return segment;
 	}
 
-	static Vec3d remap(float a, float b, Vec3d c, Vec3d d, float u)
+	public static Vec3d getPointOnSegment(Segment segment, float t)
 	{
-		return Utilities.lerp(c, d, (u - a) / (b - a));
+		return segment.a.multiply(t * t * t).add(segment.b.multiply(t * t)).add(segment.c.multiply(t)).add(segment.d);
 	}
 
-	static float getKnotInterval(Vec3d a, Vec3d b, float alpha)
+	public static class Segment
 	{
-		Vec3d temp = a.subtract(b);
-		return (float) Math.pow(temp.dotProduct(temp), alpha);
+		public Vec3d a, b, c, d;
 	}
 }
