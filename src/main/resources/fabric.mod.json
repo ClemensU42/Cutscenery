@@ -19,6 +19,9 @@
     ],
     "main": [
       "com.clemensu42.cutscenery.cutscenery.Cutscenery"
+    ],
+    "preLaunch": [
+      "com.clemensu42.cutscenery.cutscenery.CutsceneryPreLaunch"
     ]
   },
   "mixins": [

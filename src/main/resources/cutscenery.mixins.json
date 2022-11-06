@@ -6,8 +6,11 @@
   "mixins": [
   ],
   "client": [
-        "client.CameraMixin",
-        "client.MinecraftClientMixin"
+    "client.CameraMixin",
+    "client.EntityModelLoaderMixin",
+    "client.EntityRendererFactoryContextMixin",
+    "client.EntityRenderersMixin",
+    "client.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
