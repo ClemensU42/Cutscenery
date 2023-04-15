@@ -52,6 +52,7 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 	@Shadow
 	protected abstract void setPos(Vec3d pos);
 
+
 	@Inject(method = "update(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;ZZF)V", at = @At("TAIL"))
 	private void updateInject(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci)
 	{

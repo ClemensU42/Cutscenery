@@ -66,11 +66,7 @@
         "y": 5,
         "z": -5
       },
-      "camera_lookat": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
+      "camera_lookat": "minecraft:player",
       "time": 6
     },
     {
