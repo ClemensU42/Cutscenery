@@ -63,7 +63,7 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
-        "y": 0,
+        "y": 5,
         "z": -5
       },
       "camera_lookat": {

@@ -58,9 +58,14 @@ public class Keyframe
 				targetPoint = cameraLookAtPoint;
 			} // TODO: implement player following //! set targetPoint as player position
 
+			// calculate yaw
 			Vec3d diff = targetPoint.subtract(position);
 			double yaw = MathHelper.atan2(diff.getZ(), diff.getX()) * MathHelper.DEGREES_PER_RADIAN - 90.0;
-			double pitch = 0;
+
+			// calculate pitch
+			double adjacentSqrd = diff.getX() * diff.getX() + diff.getZ() * diff.getZ();
+			double adjacent = MathHelper.sqrt((float)adjacentSqrd);
+			double pitch = -MathHelper.atan2(diff.getY(), adjacent) * MathHelper.DEGREES_PER_RADIAN;
 			target.setObjectRotation((float) pitch, (float) yaw, 0);
 		}
 	}
