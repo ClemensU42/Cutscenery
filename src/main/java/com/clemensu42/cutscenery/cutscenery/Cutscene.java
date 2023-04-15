@@ -63,6 +63,25 @@ public class Cutscene
 				keyframe.yaw = rotationJson.get("yaw").getAsFloat();
 				keyframe.roll = rotationJson.get("roll").getAsFloat();
 			}
+
+			if(currentKeyframeJson.has("camera_lookat")){
+				if(currentKeyframeJson.get("camera_lookat").isJsonObject()){ // fixed point mode
+
+					keyframe.cameraLookAtMode = Keyframe.CameraLookAtMode.FOLLOW_POINT;
+					JsonObject position = currentKeyframeJson.get("camera_lookat").getAsJsonObject();
+					float x, y, z;
+					x = position.get("x").getAsFloat();
+					y = position.get("y").getAsFloat();
+					z = position.get("z").getAsFloat();
+					keyframe.cameraLookAtPoint = new Vec3d(x, y, z);
+
+				} else if(currentKeyframeJson.get("camera_lookat").isJsonPrimitive()){ // player mode
+					if(currentKeyframeJson.get("camera_lookat").getAsString().equals("minecraft:player")){
+						keyframe.cameraLookAtMode = Keyframe.CameraLookAtMode.FOLLOW_PLAYER;
+					}
+				}
+			}
+
 			keyframe.time = currentKeyframeJson.get("time").getAsFloat();
 			String environment = currentKeyframeJson.get("environment").getAsString();
 			if (environment.equals("client"))
@@ -136,6 +155,13 @@ public class Cutscene
 				buffer.writeFloat(keyframe.pitch);
 				buffer.writeFloat(keyframe.yaw);
 				buffer.writeFloat(keyframe.roll);
+
+				buffer.writeInt(keyframe.cameraLookAtMode.ordinal());
+				if(keyframe.cameraLookAtMode == Keyframe.CameraLookAtMode.FOLLOW_POINT) {
+					buffer.writeDouble(keyframe.cameraLookAtPoint.getX());
+					buffer.writeDouble(keyframe.cameraLookAtPoint.getY());
+					buffer.writeDouble(keyframe.cameraLookAtPoint.getZ());
+				}
 			}
 		}
 
@@ -144,6 +170,9 @@ public class Cutscene
 
 	public void loadFromByteBuf(PacketByteBuf buffer)
 	{
+
+		Keyframe.CameraLookAtMode[] cameraLookAtModes = Keyframe.CameraLookAtMode.values();
+
 		// Cutscene PacketByteBufs are ONLY received by client
 		environment = EnvType.CLIENT;
 
@@ -170,6 +199,12 @@ public class Cutscene
 				keyframe.pitch = buffer.readFloat();
 				keyframe.yaw = buffer.readFloat();
 				keyframe.roll = buffer.readFloat();
+
+				keyframe.cameraLookAtMode = cameraLookAtModes[buffer.readInt()];
+				if(keyframe.cameraLookAtMode == Keyframe.CameraLookAtMode.FOLLOW_POINT){
+					keyframe.cameraLookAtPoint = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+				}
+
 				keyframes.add(keyframe);
 			}
 			KeyframeCollection keyframeCollection = new KeyframeCollection();

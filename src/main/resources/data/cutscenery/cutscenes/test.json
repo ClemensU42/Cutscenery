@@ -8,7 +8,7 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 10,
-        "y": 5,
+        "y": 0,
         "z": 5
       },
       "time": 0
@@ -18,8 +18,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
-        "y": 5,
+        "y": 0,
         "z": 5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 0
     },
@@ -28,8 +33,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": -5,
-        "y": 5,
+        "y": 0,
         "z": 5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 2
     },
@@ -38,8 +48,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": -5,
-        "y": 5,
+        "y": 0,
         "z": -5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 4
     },
@@ -48,8 +63,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
-        "y": 5,
+        "y": 0,
         "z": -5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 6
     },
@@ -58,8 +78,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 5,
-        "y": 5,
+        "y": 0,
         "z": 5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 8
     },
@@ -68,8 +93,13 @@
       "type": "cutscenery:camera",
       "position": {
         "x": 10,
-        "y": 5,
+        "y": 0,
         "z": 5
+      },
+      "camera_lookat": {
+        "x": 0,
+        "y": 0,
+        "z": 0
       },
       "time": 8
     }
