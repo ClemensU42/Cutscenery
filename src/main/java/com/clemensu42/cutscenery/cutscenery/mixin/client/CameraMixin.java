@@ -7,10 +7,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.BlockView;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,16 +24,16 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 
 	@Shadow
 	@Final
-	private Vec3f diagonalPlane;
+	private Vector3f diagonalPlane;
 	@Shadow
 	@Final
-	private Vec3f verticalPlane;
+	private Vector3f verticalPlane;
 	@Shadow
 	@Final
-	private Vec3f horizontalPlane;
+	private Vector3f horizontalPlane;
 	@Shadow
 	@Final
-	private Quaternion rotation;
+	private Quaternionf rotation;
 	@Shadow
 	private float pitch;
 	@Shadow
@@ -84,8 +84,7 @@ public abstract class CameraMixin implements CameraInterface, CommonKeyframeInte
 		this.pitch = pitch;
 		this.yaw = yaw;
 		this.rotation.set(0.0f, 0.0f, 0.0f, 1.0f);
-		this.rotation.hamiltonProduct(Vec3f.POSITIVE_Y.getDegreesQuaternion(-yaw));
-		this.rotation.hamiltonProduct(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch));
+		this.rotation.rotationYXZ(-yaw * 0.017453292F, pitch * 0.017453292F, 0.0F);
 		this.horizontalPlane.set(0.0f, 0.0f, 1.0f);
 		this.horizontalPlane.rotate(this.rotation);
 		this.verticalPlane.set(0.0f, 1.0f, 0.0f);
