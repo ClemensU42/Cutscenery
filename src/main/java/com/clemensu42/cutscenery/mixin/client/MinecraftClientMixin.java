@@ -19,7 +19,7 @@ public class MinecraftClientMixin {
     private Window window;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void initImGui(RunArgs args, CallbackInfo ci){
+    public void initImGui(RunArgs args, CallbackInfo ci) {
         ImGuiImpl.create(window.getHandle());
     }
 }

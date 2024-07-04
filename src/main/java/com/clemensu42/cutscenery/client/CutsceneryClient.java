@@ -1,5 +1,6 @@
 package com.clemensu42.cutscenery.client;
 
+import com.clemensu42.cutscenery.networking.ClientNetworkReceivers;
 import net.fabricmc.api.ClientModInitializer;
 
 public class CutsceneryClient implements ClientModInitializer {
@@ -8,6 +9,6 @@ public class CutsceneryClient implements ClientModInitializer {
      */
     @Override
     public void onInitializeClient() {
-
+        ClientNetworkReceivers.registerReceivers();
     }
 }
