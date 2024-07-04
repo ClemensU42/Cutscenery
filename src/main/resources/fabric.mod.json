@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "cutscenery",
+  "version": "${version}",
+  "name": "Cutscenery",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/clemens/Cutscenery"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cutscenery/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.clemensu42.cutscenery.client.CutsceneryClient"
+    ],
+    "main": [
+      "com.clemensu42.cutscenery.Cutscenery"
+    ]
+  },
+  "mixins": [
+    "cutscenery.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
