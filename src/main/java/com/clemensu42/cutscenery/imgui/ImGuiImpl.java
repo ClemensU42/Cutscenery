@@ -20,7 +20,7 @@ public class ImGuiImpl {
         data.setIniFilename("cutscenery.ini");
         data.setFontGlobalScale(1F);
 
-        data.setConfigFlags(ImGuiConfigFlags.DockingEnable | ImGuiConfigFlags.ViewportsEnable);
+        data.setConfigFlags(ImGuiConfigFlags.DockingEnable);
 
         IM_GUI_IMPL_GLFW.init(handle, true);
         IM_GUI_IMPL_GL_3.init();
